@@ -60,6 +60,16 @@ public class RequestInfo {
         return String.format("id=%s,algorithm=hmac-sha1,headers=%s,signature=%s", this.apiKey,signHeadersString(),signature);
     }
 
+    public String sign(Long date) throws Exception {
+        URL parseUrl = URI.create(this.url).toURL();
+        String strSign = String.format("x-data: %s\n%s\n%s\n%s\n%s\n%s", signMethod(), signPath(parseUrl), signQueryParams(parseUrl),date,signHeaders(String.valueOf(date)), signBody());
+        System.out.println(strSign);
+        byte[] hmacStr = tool.HmacSHA1Encrypt(strSign, this.secret);
+        String signature = base64Encode(hmacStr);
+        System.out.println(signature);
+        return String.format("id=%s,algorithm=hmac-sha1,headers=%s,signature=%s", this.apiKey,signHeadersString(),signature);
+    }
+
     /**
      * 签名请求方法
      */
