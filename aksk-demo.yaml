@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: aksk-demo
+  name: aksk-demo
+  namespace: envoy-yang
+spec:
+  selector:
+    matchLabels:
+      app: aksk-demo
+  template:
+    metadata:
+      labels:
+        app: aksk-demo
+    spec:
+      containers:
+        - image: release-ci.daocloud.io/skoala/demo/aksk-demo:0.1.0
+          imagePullPolicy: Always
+          name: aksk-demo
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+      restartPolicy: Always
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aksk-demo
+  namespace: envoy-yang
+  labels:
+    app: aksk-demo
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: aksk-demo
+
+---

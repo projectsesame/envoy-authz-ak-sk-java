@@ -57,7 +57,6 @@ public class Demo {
             httpPost.setEntity(stringEntity);
             response = httpClient.execute(httpPost);
         }
-        new String("".getBytes(), "UTF-8");
         // Receive response
         assert response != null;
         HttpEntity responseEntity = response.getEntity();
@@ -67,7 +66,7 @@ public class Demo {
         return Mono.just(ResponseEntity.status(response.getStatusLine().getStatusCode()).build());
     }
 
-    @GetMapping("/signstr")
+    @PostMapping("/signstr")
     public Mono<ResponseEntity<SignInfo>> signstr(@RequestBody(required = false) RequestInfo requestInfo) throws Exception {
         Long date = System.currentTimeMillis();
         String sign = requestInfo.sign(date);
@@ -77,7 +76,7 @@ public class Demo {
         return Mono.just(ResponseEntity.status(200).body(signInfo));
     }
 
-    @GetMapping("/signstrbytime")
+    @PostMapping("/signstrbytime")
     public Mono<ResponseEntity<SignInfo>> signstrbytime(@RequestBody(required = false) RequestInfo requestInfo,@RequestParam long date) throws Exception {
         String sign = requestInfo.sign(date);
         SignInfo signInfo = new SignInfo();
