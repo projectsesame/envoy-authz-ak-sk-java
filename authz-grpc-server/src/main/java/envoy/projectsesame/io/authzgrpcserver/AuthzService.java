@@ -21,7 +21,7 @@ public class AuthzService extends AuthorizationGrpc.AuthorizationImplBase {
 
     @Override
     public void check(CheckRequest request, StreamObserver<CheckResponse> responseObserver) {
-        CheckResponse checkResponse = null;
+        CheckResponse checkResponse;
         // 查找是否有auth头
         Map<String, String> headersMap = request.getAttributes().getRequest().getHttp().getHeadersMap();
         if (headersMap.containsKey("authorization") && headersMap.containsKey("x-date")){
@@ -62,20 +62,15 @@ public class AuthzService extends AuthorizationGrpc.AuthorizationImplBase {
                 } else {
                     checkResponse = CheckResponse.newBuilder().setDeniedResponse(DeniedHttpResponse.newBuilder().setBody("Sign error\n")).setStatus(Status.newBuilder().setCode(Code.PERMISSION_DENIED_VALUE).build()).build();
                 }
-                responseObserver.onNext(checkResponse);
-                responseObserver.onCompleted();
-
             }catch (Exception e){
                 checkResponse = CheckResponse.newBuilder().setDeniedResponse(DeniedHttpResponse.newBuilder().setBody("No permission\n")).setStatus(Status.newBuilder().setCode(Code.PERMISSION_DENIED_VALUE).build()).build();
-                responseObserver.onNext(checkResponse);
-                responseObserver.onCompleted();
+
             }
 
+        }else {
+            checkResponse = CheckResponse.newBuilder().setDeniedResponse(DeniedHttpResponse.newBuilder().setBody("No permission\n")).setStatus(Status.newBuilder().setCode(Code.PERMISSION_DENIED_VALUE).build()).build();
         }
-        checkResponse = CheckResponse.newBuilder().setDeniedResponse(DeniedHttpResponse.newBuilder().setBody("No permission\n")).setStatus(Status.newBuilder().setCode(Code.PERMISSION_DENIED_VALUE).build()).build();
         responseObserver.onNext(checkResponse);
         responseObserver.onCompleted();
-
-        System.out.println("check");
     }
 }
