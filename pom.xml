@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.6</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>projectsesame.io</groupId>
@@ -14,9 +14,7 @@
     <name>ak-sk-demo</name>
     <description>ak-sk-demo</description>
     <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -52,7 +50,6 @@
     </dependencies>
 
     <build>
-        <finalName>ak-sk-demo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
