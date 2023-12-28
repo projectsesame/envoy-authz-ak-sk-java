@@ -39,6 +39,7 @@ public class RequestInfo {
     }
 
     private boolean checkHmacSHA1Sign(String strSign, SignInfo signInfo) throws Exception {
+        System.out.println(strSign);
         byte[] hmacStr = Tool.HmacSHA1Encrypt(strSign, signInfo.getSecret());
         String signature = Tool.base64Encode(hmacStr);
         return signature.equals(signInfo.getSignature());
